@@ -1,0 +1,30 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class TitleSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        \App\Models\Title::insert([
+            [
+                'name' => 'Designer',
+            ],
+            [
+                'name' => 'Programmer',
+            ],
+            [
+                'name' => 'Copywriter',
+            ],
+            [
+                'name' => 'Digital Marketing',
+            ],
+        ]);
+    }
+}
