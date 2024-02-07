@@ -14,15 +14,19 @@ class TitleSeeder extends Seeder
     {
         \App\Models\Title::insert([
             [
+                'slug' => 'designer',
                 'name' => 'Designer',
             ],
             [
+                'slug' => 'programmer',
                 'name' => 'Programmer',
             ],
             [
+                'slug' => 'copywriter',
                 'name' => 'Copywriter',
             ],
             [
+                'slug' => 'digital-marketing',
                 'name' => 'Digital Marketing',
             ],
         ]);

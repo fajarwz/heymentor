@@ -11,6 +11,7 @@ class HomeController extends Controller
     public function index(Request $request) {
         $allTitle = [
             'id' => null,
+            'slug' => null,
             'name' => 'All Roles',
         ];
         $titles = Title::all()->toArray();
@@ -20,10 +21,18 @@ class HomeController extends Controller
             ...$titles,
         ];
 
+        $mentors = Mentor::with('user');
+
+        if ($request->title) {
+            $mentors->whereHas('title', function ($query) use ($request) {
+                $query->where('name', $request->title);
+            });
+        }
+
         return view('pages.home', [
             'titles' => $titles,
-            'mentors' => Mentor::with('user')->get(),
-            'role' => $request->role,
+            'mentors' => $mentors->paginate(1),
+            'currentTitle' => $request->title,
         ]);
     }
 }

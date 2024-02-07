@@ -10,6 +10,7 @@ class Title extends Model
     use HasFactory;
 
     protected $fillable = [
+        'slug',
         'name',
     ];
 }
