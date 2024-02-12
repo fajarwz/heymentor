@@ -25,7 +25,7 @@ class HomeController extends Controller
 
         if ($request->title) {
             $mentors->whereHas('title', function ($query) use ($request) {
-                $query->where('name', $request->title);
+                $query->where('slug', $request->title);
             });
         }
 
