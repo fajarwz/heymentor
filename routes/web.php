@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/profile', function () {
-    return view('pages.profile');
-})->name('profile');
+Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile');
 
 Route::get('/checkout', function () {
     return view('pages.checkout');

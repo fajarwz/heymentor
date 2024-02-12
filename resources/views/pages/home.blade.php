@@ -16,11 +16,11 @@
     <div class="grid grid-cols-4 gap-x-8 gap-y-8">
         @forelse ($mentors as $mentor)
         <div class="item-mentor p-8 border items-center flex flex-col gap-y-4">
-            <a href="{{ route('profile') }}">
+            <a href="{{ route('profile', $mentor->user->username) }}">
                 <img src="{{ $mentor->user->image }}" alt="" class="object-cover w-[60px] h-[60px] bg-red-100 rounded-full">
             </a>
             <div class="flex flex-col gap-y-2 items-center">
-                <a href="{{ route('profile') }}">
+                <a href="{{ route('profile', $mentor->user->username) }}">
                     <h3 class="text-xl text-indigo-950 font-bold">
                         {{ $mentor->user->name }}
                     </h3>

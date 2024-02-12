@@ -47,6 +47,7 @@ class MentorSeeder extends Seeder
         foreach ($data as $data) {
             $user = User::create([
                 'name' => $data['name'],
+                'username' => str($data['name'])->lower()->snake(),
                 'email' => $data['email'],
                 'password' => 'password',
                 'image' => $data['image'],
