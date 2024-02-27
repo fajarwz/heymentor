@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             TitleSeeder::class,
             MentorSeeder::class,
             PortfolioSeeder::class,
+            MemberSeeder::class,
+            BookingSeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();

@@ -9,6 +9,7 @@
 <body>
     @include('partials.nav')
     @yield('content')
+    @yield('after-scripts')
 </body>
 
 </html>

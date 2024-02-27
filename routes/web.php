@@ -17,9 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile');
+Route::get('{username}', [ProfileController::class, 'show'])->name('profile');
+Route::get('{username}/available-time/{date}', [ProfileController::class, 'getAvailableTime'])->name('profile.get-available-time');
 
-Route::get('/checkout', function () {
+Route::get('{username}/checkout', function () {
     return view('pages.checkout');
 })->name('checkout');
 

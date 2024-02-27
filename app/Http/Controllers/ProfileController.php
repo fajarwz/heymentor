@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Mentor;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -18,9 +20,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function getAvailableTime($username, $date, $time) {
-
-        $time = [
+    public function getAvailableTime($username, $date) {
+        $times = [
             0 => '12:00 AM',
             1 => '01:00 AM',
             2 => '02:00 AM',
@@ -57,10 +58,22 @@ class ProfileController extends Controller
             ]);
         }
         
-        $bookingTimes = Booking::where('mentor_user_id', $mentor->id)
+        $bookedTimes = Booking::where('mentor_user_id', $mentor->id)
             ->where('date', $date)
             ->pluck('time');
 
-        // $bookingTimes
+        foreach ($bookedTimes as $bookedTime) {
+            unset($times[
+                (int) Carbon::parse($bookedTime)->format('H')
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'data' => [
+                'times' => $times,
+            ],
+        ]);
     }
 }

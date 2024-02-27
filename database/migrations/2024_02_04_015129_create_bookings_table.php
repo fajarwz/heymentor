@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('mentor_user_id');
-            $table->unsignedInteger('hours');
-            $table->date('date');
-            $table->time('time');
+            $table->date('start_date');
+            $table->time('start_time');
+            $table->date('end_date');
+            $table->time('end_time');
             $table->decimal('price_after_hours', 11, 2);
             $table->decimal('tax_cost', 11, 2);
             $table->decimal('career_insurance_cost', 11, 2);

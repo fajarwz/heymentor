@@ -89,9 +89,9 @@
                             choose time
                         </p>
                         <select name="time" id="time" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
-                            <option value="9">09.00 AM</option>
+                            {{-- <option value="9">09.00 AM</option>
                             <option value="13">01.00 PM</option>
-                            <option value="22">10.00 PM</option>
+                            <option value="22">10.00 PM</option> --}}
                         </select>
                     </div>
                     <button type="submit" class="w-full bg-slate-300 px-8 py-4 text-base font-semibold">
@@ -102,4 +102,24 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('after-scripts')
+<script>
+    var mentorUsername = "{{ $mentor->user->username }}"
+    document.getElementById('date').addEventListener('change', async function () {
+        var response = await fetch(`/profile/${mentorUsername}/available-time/${this.value}`)
+        var json = await response.json()
+
+        if (json.success) {
+            var html = "";
+
+            for (const [key, value] of Object.entries(json.data.times)) {
+                html += `<option value="${key}">${value}</option>`;
+            }
+
+            document.getElementById('time').innerHTML = html
+        }
+    });
+</script>
 @endsection
