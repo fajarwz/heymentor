@@ -20,59 +20,39 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function getAvailableTime($username, $date) {
-        $times = [
-            0 => '12:00 AM',
-            1 => '01:00 AM',
-            2 => '02:00 AM',
-            3 => '03:00 AM',
-            4 => '04:00 AM',
-            5 => '05:00 AM',
-            6 => '06:00 AM',
-            7 => '07:00 AM',
-            8 => '08:00 AM',
-            9 => '09:00 AM',
-            10 => '10:00 AM',
-            11 => '11:00 AM',
-            12 => '12:00 PM',
-            13 => '01:00 PM',
-            14 => '02:00 PM',
-            15 => '03:00 PM',
-            16 => '04:00 PM',
-            17 => '05:00 PM',
-            18 => '06:00 PM',
-            19 => '07:00 PM',
-            20 => '08:00 PM',
-            21 => '09:00 PM',
-            22 => '10:00 PM',
-            23 => '11:00 PM',
-        ];
+    public function getAvailableTime($username, $date, $hours) {
+        $startHour = 0;
+        $endHour = 23;
+
+        $availableTimes = [];
 
         $mentor = User::where('username', $username)->first();
+        $date = Carbon::parse($date);
 
-        if (!$mentor) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mentor not found.',
-                'data' => [],
-            ]);
-        }
-        
-        $bookedTimes = Booking::where('mentor_user_id', $mentor->id)
-            ->where('date', $date)
-            ->pluck('time');
+        for ($hour = $startHour; $hour <= $endHour; $hour++) {
+            $startTime = $date->clone()->setHour($hour)->startOfHour();
+            $endTime = $date->clone()->setHour($hour + ($hours - 1))->endOfHour();
 
-        foreach ($bookedTimes as $bookedTime) {
-            unset($times[
-                (int) Carbon::parse($bookedTime)->format('H')
-            ]);
-        }
+            // Check if any booking conflicts with this time slot
+            $conflictingBooking = Booking::where('mentor_user_id', $mentor->id)
+                ->where(function ($query) use ($startTime, $endTime) {
+                    $query->where(function ($q) use ($startTime, $endTime) {
+                        $q->where('start_date_time', '<', $endTime)
+                          ->where('end_date_time', '>', $startTime);
+                    });
+                })->exists();
+
+            // If no conflict, add the time slot to available times
+            if (!$conflictingBooking) {
+              $availableTimes[$hour] = $startTime->format('H:i A');
+            }
+          }
 
         return response()->json([
             'success' => true,
             'message' => '',
             'data' => [
-                'times' => $times,
+                'times' => $availableTimes,
             ],
         ]);
     }

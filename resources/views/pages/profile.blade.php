@@ -71,7 +71,7 @@
                 <p class="text-sm text-indigo-950">
                     {{ "$$mentor->price_per_hour/hour" }}
                 </p>
-                <form action="{{ route('checkout') }}">
+                <form action="{{ route('checkout', $mentor->user->username) }}">
                     <div class="mb-4">
                         <p class="text-sm text-indigo-950">
                             how many hour?
@@ -82,16 +82,13 @@
                         <p class="text-sm text-indigo-950">
                             choose date
                         </p>
-                        <input type="date" min="{{ today()->format('Y-m-d') }}" name="date" id="date" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                        <input type="date" name="date" id="date" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                     </div>
                     <div class="mb-4">
                         <p class="text-sm text-indigo-950">
                             choose time
                         </p>
                         <select name="time" id="time" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
-                            {{-- <option value="9">09.00 AM</option>
-                            <option value="13">01.00 PM</option>
-                            <option value="22">10.00 PM</option> --}}
                         </select>
                     </div>
                     <button type="submit" class="w-full bg-slate-300 px-8 py-4 text-base font-semibold">
@@ -106,19 +103,30 @@
 
 @section('after-scripts')
 <script>
-    var mentorUsername = "{{ $mentor->user->username }}"
-    document.getElementById('date').addEventListener('change', async function () {
-        var response = await fetch(`/profile/${mentorUsername}/available-time/${this.value}`)
-        var json = await response.json()
+    // Set minimum date for #date element
+    var today = new Date();
+    var formattedDate = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + today.getDate();
+    $("#date").attr("min", formattedDate);
 
-        if (json.success) {
-            var html = "";
+    // Get mentor username from data attribute
+    var mentorUsername = "{{ $mentor->user->username }}";
 
-            for (const [key, value] of Object.entries(json.data.times)) {
+    // Change event handler for #date element
+    $("#date").on("change", async function() {
+        var hours = $("#hours").val();
+        try {
+            const response = await fetch(`/${mentorUsername}/available-time/${this.value}/${hours}`);
+            const json = await response.json();
+
+            if (json.success) {
+                let html = "";
+                for (const [key, value] of Object.entries(json.data.times)) {
                 html += `<option value="${key}">${value}</option>`;
+                }
+                $("#time").html(html);
             }
-
-            document.getElementById('time').innerHTML = html
+        } catch (error) {
+            console.error(error);
         }
     });
 </script>

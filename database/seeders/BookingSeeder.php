@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Booking;
+use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,8 +23,8 @@ class BookingSeeder extends Seeder
             [
                 'user_id' => $member->id,
                 'mentor_user_id' => $mentor->id,
-                'start_date_time' => now()->addDay(),
-                'end_date_time' => now()->addDay()->addHours(3),
+                'start_date_time' => now()->addDay()->startOfHour(),
+                'end_date_time' => now()->addDay()->addHours(3)->endOfHour(),
                 'price_after_hours' => $priceAfterHours = $mentor->mentor->price_per_hour * 3,
                 'tax_cost' => $taxCost = ($setting->tax_percent / 100) * $priceAfterHours,
                 'career_insurance_cost' => $careerInsuranceCost = $setting->career_insurance_cost,
@@ -34,8 +35,8 @@ class BookingSeeder extends Seeder
             [
                 'user_id' => $member->id,
                 'mentor_user_id' => $mentor->id,
-                'start_date_time' => now()->addDays(2)->addHours(3),
-                'end_date_time' => now()->addDays(2)->addHours(6),
+                'start_date_time' => now()->addDays(2)->addHours(3)->startOfHour(),
+                'end_date_time' => now()->addDays(2)->addHours(6)->endOfHour(),
                 'price_after_hours' => $priceAfterHours = $mentor->mentor->price_per_hour * 3,
                 'tax_cost' => $taxCost = ($setting->tax_percent / 100) * $priceAfterHours,
                 'career_insurance_cost' => $careerInsuranceCost = $setting->career_insurance_cost,

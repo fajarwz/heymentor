@@ -7,21 +7,21 @@
             <li><a href="{{ route('home') }}" class=" px-8 py-4 text-base font-semibold">
                     Home /
                 </a></li>
-            <li><a href="{{ route('profile') }}" class=" px-8 py-4 text-base font-semibold">
+            <li><a href="{{ route('profile', $mentor->user->username) }}" class=" px-8 py-4 text-base font-semibold">
                     Profile /
                 </a></li>
-            <li><a href="{{ route('checkout') }}" class=" px-8 py-4 text-base font-semibold">
+            <li><a href="{{ route('checkout', $mentor->user->username) }}" class=" px-8 py-4 text-base font-semibold">
                     Checkout
                 </a></li>
         </ul>
     </div>
     <div class="p-8 border items-center flex flex-row gap-x-4">
-        <a href="{{ route('profile') }}">
+        <a href="{{ route('profile', $mentor->user->username) }}">
             <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="" class="object-cover w-[100px] h-[100px] bg-red-100 rounded-full">
         </a>
         <div class="flex flex-col gap-y-2 items-left">
-            <a href="{{ route('profile') }}">
+            <a href="{{ route('profile', $mentor->user->username) }}">
                 <h3 class="text-xl text-indigo-950 font-bold">
                     Ivanna Link
                 </h3>
