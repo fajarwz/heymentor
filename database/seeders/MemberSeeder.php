@@ -36,7 +36,7 @@ class MemberSeeder extends Seeder
                 'username' => str($data['name'])->lower()->snake(),
                 'email' => $data['email'],
                 'password' => 'password',
-                'image' => 'https://ui-avatars.com/api/?name='.$data['name'],
+                'image' => env('AVATAR_URL').$data['name'],
                 'role' => User::ROLE_MEMBER, 
             ]);
         }

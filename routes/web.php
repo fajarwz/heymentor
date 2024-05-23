@@ -17,21 +17,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/checkout/success', function () {
+    return view('pages.checkout-success');
+})->name('checkout.success');
+
+// Route::get('/sign-in', function () {
+//     return view('pages.sign-in');
+// })->name('sign-in');
+
+// Route::get('/sign-up', function () {
+//     return view('pages.sign-up');
+// })->name('sign-up');
+
+require __DIR__.'/auth.php';
+
 Route::get('{username}', [ProfileController::class, 'show'])->name('profile');
 Route::get('{username}/available-time/{date}/{hours}', [ProfileController::class, 'getAvailableTime'])->name('profile.get-available-time');
 
 Route::get('{username}/checkout', function () {
     return view('pages.checkout');
 })->name('checkout');
-
-Route::get('/checkout/success', function () {
-    return view('pages.checkout-success');
-})->name('checkout.success');
-
-Route::get('/sign-in', function () {
-    return view('pages.sign-in');
-})->name('sign-in');
-
-Route::get('/sign-up', function () {
-    return view('pages.sign-up');
-})->name('sign-up');

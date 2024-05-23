@@ -23,11 +23,11 @@
                 </a></li>
         </ul>
         <ul class="flex flex-row gap-x-3">
-            <li><a href="{{ route('sign-in') }}" class="bg-slate-300 px-8 py-4 text-base font-semibold">
-                    Sign In
+            <li><a href="{{ route('login') }}" class="bg-slate-300 px-8 py-4 text-base font-semibold">
+                    Login
                 </a></li>
-            <li><a href="{{ route('sign-up') }}" class="bg-slate-300 px-8 py-4 text-base font-semibold">
-                    Sign Up
+            <li><a href="{{ route('register') }}" class="bg-slate-300 px-8 py-4 text-base font-semibold">
+                    Register
                 </a></li>
         </ul>
     </div>
