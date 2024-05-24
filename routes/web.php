@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,6 @@ require __DIR__.'/auth.php';
 Route::get('{username}', [ProfileController::class, 'show'])->name('profile');
 Route::get('{username}/available-time/{date}/{hours}', [ProfileController::class, 'getAvailableTime'])->name('profile.get-available-time');
 
-Route::get('{username}/checkout', function () {
-    return view('pages.checkout');
-})->name('checkout');
+Route::post('{username}/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::get('{username}/checkout/{bookingId}', [CheckoutController::class, 'show'])->name('checkout.show');
+Route::get('{username}/checkout/{bookingId}/success', [CheckoutController::class, 'success'])->name('checkout.success');

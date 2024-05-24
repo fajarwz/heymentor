@@ -3,25 +3,25 @@
 @section('content')
 <section class=" max-w-6xl mx-auto py-10 flex flex-col gap-y-10">
     <div class="p-8 border items-center flex flex-row gap-x-4">
-        <a href="{{ route('profile') }}">
-            <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        <a href="{{ route('profile', $mentor->user->username) }}">
+            <img src="{{ $mentor->user->image }}"
                 alt="" class="object-cover w-[100px] h-[100px] bg-red-100 rounded-full">
         </a>
         <div class="flex flex-col gap-y-2 items-left">
-            <a href="{{ route('profile') }}">
+            <a href="{{ route('profile', $mentor->user->username) }}">
                 <h3 class="text-xl text-indigo-950 font-bold">
-                    Ivanna Link
+                    {{ $mentor->user->name }}
                 </h3>
             </a>
             <div class="flex flex-row gap-x-4">
                 <p class="text-sm text-indigo-950">
-                    UX Designer
+                    {{ $mentor->title->name }}
                 </p>
                 <p class="text-sm text-indigo-950">
-                    8+ experiences
+                    {{ (now()->year - $mentor->start_date_experience->year) . '+ years experience' }}
                 </p>
                 <p class="text-sm text-indigo-950">
-                    193 sessions
+                    {{ $mentor->total_sessions . ' sessions' }}
                 </p>
             </div>
         </div>

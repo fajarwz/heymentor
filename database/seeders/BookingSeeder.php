@@ -19,7 +19,7 @@ class BookingSeeder extends Seeder
         $mentor = User::where('role', User::ROLE_MENTOR)->first();
         $setting = Setting::first();
 
-        Booking::insert([
+        $data = [
             [
                 'user_id' => $member->id,
                 'mentor_user_id' => $mentor->id,
@@ -44,6 +44,10 @@ class BookingSeeder extends Seeder
                 'grand_total' => $priceAfterHours + $taxCost + $careerInsuranceCost + $addOnToolsCost,
                 'status' => Booking::STATUS_APPROVED,
             ],
-        ]);
+        ];
+
+        foreach ($data as $data) {
+            Booking::create($data);
+        }
     }
 }

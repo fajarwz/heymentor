@@ -71,7 +71,8 @@
                 <p class="text-sm text-indigo-950">
                     {{ "$$mentor->price_per_hour/hour" }}
                 </p>
-                <form action="{{ route('checkout', $mentor->user->username) }}">
+                <form method="POST" action="{{ route('checkout', $mentor->user->username) }}">
+                    @csrf
                     <div class="mb-4">
                         <p class="text-sm text-indigo-950">
                             how many hour?
@@ -91,9 +92,15 @@
                         <select name="time" id="time" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                         </select>
                     </div>
-                    <button type="submit" class="w-full bg-slate-300 px-8 py-4 text-base font-semibold">
-                        Proceed to Checkout
-                    </button>
+                    @auth
+                        <button type="submit" class="w-full bg-slate-300 px-8 py-4 text-base font-semibold">
+                            Proceed to Checkout
+                        </button>
+                    @else
+                        <a href="{{ route('sign-in') }}" class="block text-center w-full bg-slate-300 px-8 py-4 text-base font-semibold">
+                            Sign In to Checkout
+                        </a>
+                    @endauth
                 </form>
             </div>
         </div>
