@@ -9,20 +9,23 @@
         <p class="text-sm text-indigo-950">
             Get the best insights from mentor
         </p>
-        <form action="" class="flex flex-col gap-y-5">
+        <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-y-5">
+            @csrf
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
-                    email address
+                    Email Address
                 </p>
-                <input type="text" name="" id="" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="text" name="email" id="email" value="{{ old('email') }}" autofocus class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
-                    password
+                    Password
                 </p>
-                <input type="password" name="" id=""
+                <input type="password" name="password" id="password"
                     class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
-                <a href="#" class="text-blue-400">forgot password</a>
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <a href="#" class="text-blue-400">Forgot Password</a>
             </div>
             <button type="submit" class="w-full bg-slate-950 text-white px-8 py-4 text-base font-semibold">
                 Sign In

@@ -19,14 +19,17 @@ class MemberSeeder extends Seeder
             [
                 'name' => 'Fajar Z',
                 'email' => 'fajar.z@test.com',
+                'phone_number' => '034893849343',
             ],
             [
                 'name' => 'Jerry Frost',
                 'email' => 'jerry.frost@test.com',
+                'phone_number' => '085495802453',
             ],
             [
                 'name' => 'William Jr',
                 'email' => 'william.jr@test.com',
+                'phone_number' => '085834579454',
             ],
         ];
 
@@ -34,6 +37,7 @@ class MemberSeeder extends Seeder
             User::create([
                 'name' => $data['name'],
                 'username' => str($data['name'])->lower()->snake(),
+                'phone_number' => $data['phone_number'],
                 'email' => $data['email'],
                 'password' => 'password',
                 'image' => env('AVATAR_URL').$data['name'],

@@ -21,6 +21,7 @@ class MentorSeeder extends Seeder
             [
                 'name' => 'Ivanna Link',
                 'email' => 'ivanna.link@gmail.com',
+                'phone_number' => '038948394349',
                 'image' => 'https://images.unsplash.com/photo-1548142813-c348350df52b?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                 'start_date_experience' => now()->subYear(8),
                 'price_per_hour' => 29.99,
@@ -29,6 +30,7 @@ class MentorSeeder extends Seeder
             [
                 'name' => 'John Doe',
                 'email' => 'john.doe@gmail.com',
+                'phone_number' => '085389483948',
                 'image' => 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg',
                 'start_date_experience' => now()->subYear(6),
                 'price_per_hour' => 24.99,
@@ -37,6 +39,7 @@ class MentorSeeder extends Seeder
             [
                 'name' => 'Johnny Dae',
                 'email' => 'johnny.dae@gmail.com',
+                'phone_number' => '0859457894859',
                 'image' => 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                 'start_date_experience' => now()->subYear(11),
                 'price_per_hour' => 36.99,
@@ -48,6 +51,7 @@ class MentorSeeder extends Seeder
             $user = User::create([
                 'name' => $data['name'],
                 'username' => str($data['name'])->lower()->snake(),
+                'phone_number' => $data['phone_number'],
                 'email' => $data['email'],
                 'password' => 'password',
                 'image' => $data['image'],

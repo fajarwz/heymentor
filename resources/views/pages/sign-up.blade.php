@@ -9,37 +9,50 @@
         <p class="text-sm text-indigo-950">
             Get the best insights from mentor
         </p>
-        <form action="" class="flex flex-col gap-y-5">
+        <form method="POST" action="{{ route('register') }}" class="flex flex-col gap-y-5">
+            @csrf
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
-                    complete name
+                    Complete Name
                 </p>
-                <input type="text" name="" id="" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="text" name="name" id="" value="{{ old('name') }}" autofocus class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
-                    phone number
+                    Phone Number
                 </p>
-                <input type="text" name="" id="" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="text" name="phone_number" id="" value="{{ old('phone_number') }}" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
-                    email address
+                    Email Address
                 </p>
-                <input type="text" name="" id="" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="text" name="email" id="" value="{{ old('email') }}" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
-                    password
+                    Password
                 </p>
-                <input type="password" name="" id=""
+                <input type="password" name="password" id="" 
                     class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            </div>
+            <div class="mb-4">
+                <p class="text-sm text-indigo-950">
+                    Confirm Password
+                </p>
+                <input type="password" name="password_confirmation" id="" 
+                    class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
             <button type="submit" class="w-full bg-slate-950 text-white px-8 py-4 text-base font-semibold">
                 Sign Up
             </button>
             <a href="{{ route('sign-in') }}" class="w-full text-center bg-slate-300 px-8 py-4 text-base font-semibold">
-                Sign In to my Account
+                Sign In to my account
             </a>
         </form>
     </div>

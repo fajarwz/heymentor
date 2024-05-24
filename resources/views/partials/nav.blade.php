@@ -22,13 +22,37 @@
                     Stories
                 </a></li>
         </ul>
-        <ul class="flex flex-row gap-x-3">
-            <li><a href="{{ route('login') }}" class="bg-slate-300 px-8 py-4 text-base font-semibold">
-                    Login
-                </a></li>
-            <li><a href="{{ route('register') }}" class="bg-slate-300 px-8 py-4 text-base font-semibold">
-                    Register
-                </a></li>
-        </ul>
+        @auth
+            <ul class="flex flex-row gap-x-3">
+                <li class="flex flex-row">
+                    <div class="my-auto">
+                        {{ 'Hi, ' . auth()->user()->name . '!' }}
+                    </div>
+                </li>
+                <li class="flex flex-row">
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="d-inline bg-slate-300 px-8 py-4 text-base font-semibold">
+                            Sign Out
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        @else
+            @if (Route::currentRouteName() !== 'sign-in' && Route::currentRouteName() !== 'sign-up')
+                <ul class="flex flex-row gap-x-3">
+                    <li>
+                        <a href="{{ route('sign-in') }}" class="bg-slate-300 px-8 py-4 text-base font-semibold">
+                            Sign In
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('sign-up') }}" class="bg-slate-300 px-8 py-4 text-base font-semibold">
+                            Sign Up
+                        </a>
+                    </li>
+                </ul>
+            @endif
+        @endauth
     </div>
 </nav>

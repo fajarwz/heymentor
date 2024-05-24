@@ -21,13 +21,13 @@ Route::get('/checkout/success', function () {
     return view('pages.checkout-success');
 })->name('checkout.success');
 
-// Route::get('/sign-in', function () {
-//     return view('pages.sign-in');
-// })->name('sign-in');
+Route::get('/sign-in', function () {
+    return view('pages.sign-in');
+})->name('sign-in');
 
-// Route::get('/sign-up', function () {
-//     return view('pages.sign-up');
-// })->name('sign-up');
+Route::get('/sign-up', function () {
+    return view('pages.sign-up');
+})->name('sign-up');
 
 require __DIR__.'/auth.php';
 
