@@ -35,6 +35,9 @@ require __DIR__.'/auth.php';
 Route::get('{username}', [ProfileController::class, 'show'])->name('profile');
 Route::get('{username}/available-time/{date}/{hours}', [ProfileController::class, 'getAvailableTime'])->name('profile.get-available-time');
 
-Route::post('{username}/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-Route::get('{username}/checkout/{bookingId}', [CheckoutController::class, 'show'])->name('checkout.show');
-Route::get('{username}/checkout/{bookingId}/success', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::middleware(['auth'])->group(function() {
+    Route::post('{username}/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('{username}/checkout/{bookingId}', [CheckoutController::class, 'show'])->name('checkout.show');
+    // Route::get('{username}/checkout/{bookingId}/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+});
