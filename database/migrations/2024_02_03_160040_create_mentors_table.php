@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('title_id');
             $table->timestamp('start_date_experience');
             $table->text('about');
-            $table->decimal('price_per_hour', 8, 2);
+            $table->decimal('price_per_hour', 12, 0);
             $table->unsignedBigInteger('total_sessions');
         });
     }

@@ -44,7 +44,7 @@ class ProfileController extends Controller
 
             // If no conflict, add the time slot to available times
             if (!$conflictingBooking) {
-              $availableTimes[$hour] = $startTime->format('H:i A');
+              $availableTimes[$hour] = $startTime->format('g:i A');
             }
           }
 

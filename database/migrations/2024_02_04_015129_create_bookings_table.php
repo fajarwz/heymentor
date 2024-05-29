@@ -17,11 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('mentor_user_id');
             $table->dateTime('start_date_time');
             $table->dateTime('end_date_time');
-            $table->decimal('price_after_hours', 11, 2);
-            $table->decimal('tax_cost', 11, 2);
-            $table->decimal('career_insurance_cost', 11, 2);
-            $table->decimal('add_on_tools_cost', 11, 2);
-            $table->decimal('grand_total', 11, 2);
+            $table->decimal('price_after_hours', 12, 0);
+            $table->decimal('tax_cost', 12, 0);
+            $table->decimal('career_insurance_cost', 12, 0);
+            $table->decimal('add_on_tools_cost', 12, 0);
+            $table->decimal('grand_total', 12, 0);
             $table->unsignedTinyInteger('status')->comment('1 = PENDING, 2 = APPROVED, 3 = REJECTED');
             $table->timestamps();
         });

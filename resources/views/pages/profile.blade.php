@@ -69,7 +69,7 @@
                     Booking Mentor
                 </h3>
                 <p class="text-sm text-indigo-950">
-                    {{ "$$mentor->price_per_hour/hour" }}
+                    {{ 'Rp. ' . number_format($mentor->price_per_hour) . '/hour' }}
                 </p>
                 <form method="POST" action="{{ route('checkout', $mentor->user->username) }}">
                     @csrf

@@ -47,25 +47,48 @@
                 Date and time: <strong>{{ $booking->start_date_time->format('d M Y') . ' at ' . $booking->start_date_time->format('H.i A') }}</strong>
             </a></li>
         <li><a href="#">
-                Price: <strong>{{ '$' . $booking->price_after_hours }}</strong>
+                Price: <strong>{{ 'Rp. ' . number_format($booking->price_after_hours) }}</strong>
             </a></li>
         <li><a href="#">
-                Tax {{ $setting->tax_percent . '%' }}: <strong>{{ '$' . $booking->tax_cost }}</strong>
+                Tax {{ $setting->tax_percent . '%' }}: <strong>{{ 'Rp. ' . number_format($booking->tax_cost) }}</strong>
             </a></li>
         <li><a href="#">
-                Career insurance: <strong>{{ '$' . $booking->career_insurance_cost }}</strong>
+                Career insurance: <strong>{{ 'Rp. ' . number_format($booking->career_insurance_cost) }}</strong>
             </a></li>
         <li><a href="#">
-                Add on tools: <strong>{{ '$' . $booking->add_on_tools_cost }}</strong>
+                Add on tools: <strong>{{ 'Rp. ' . number_format($booking->add_on_tools_cost) }}</strong>
             </a></li>
         <li><a href="#">
-                Grand total: <strong>{{ '$' . $booking->grand_total }}</strong>
+                Grand total: <strong>{{ 'Rp. ' . number_format($booking->grand_total) }}</strong>
             </a></li>
     </ul>
     <div>
-        <a href="{{ route('checkout.success', [$mentor->user->username, $booking->id]) }}" class="py-3 px-5 bg-slate-900 text-white font-bold">
+        <button type="button" id="pay-button" type="submit" class="py-3 px-5 bg-slate-900 text-white font-bold">
             Pay with Midtrans
-        </a>
+        </button>
     </div>
 </section>
+@endsection
+
+@section('after-scripts')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
+    <script type="text/javascript">
+    document.getElementById('pay-button').onclick = function(){
+        // SnapToken acquired from previous step
+        snap.pay('{{ $snapToken }}', {
+        // Optional
+        onSuccess: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        },
+        // Optional
+        onPending: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        },
+        // Optional
+        onError: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        }
+        });
+    };
+    </script>
 @endsection

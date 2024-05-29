@@ -14,8 +14,8 @@ class SettingSeeder extends Seeder
     {
         \App\Models\Setting::firstOrCreate([
             'tax_percent' => 11,
-            'career_insurance_cost' => 19.99,
-            'add_on_tools_cost' => 9.99,
+            'career_insurance_cost' => 99_000,
+            'add_on_tools_cost' => 199_000,
         ]);
     }
 }

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('tax_percent');
-            $table->decimal('career_insurance_cost', 11, 2);
-            $table->decimal('add_on_tools_cost', 11, 2);
+            $table->decimal('career_insurance_cost', 12, 0);
+            $table->decimal('add_on_tools_cost', 12, 0);
             $table->timestamps();
         });
     }

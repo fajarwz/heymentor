@@ -7,6 +7,7 @@ use App\Models\Mentor;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class CheckoutController extends Controller
 {
@@ -49,15 +50,41 @@ class CheckoutController extends Controller
 
         $setting = Setting::first();
 
+        $snapToken = $this->getMidtransSnapToken($booking);
+
         return view('pages.checkout', [
             'mentor' => $mentor,
             'booking' => $booking,
             'setting' => $setting,
+            'snapToken' => $snapToken,
+            'clientKey' => env('MIDTRANS_CLIENT_KEY'),
         ]);
     }
 
-    public function pay($username, Request $request) {
-        // 
+    private function getMidtransSnapToken($booking) {
+        // Set your Merchant Server Key
+        \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        \Midtrans\Config::$isProduction = false;
+        // Set sanitization on (default)
+        \Midtrans\Config::$isSanitized = true;
+        // Set 3DS transaction for credit card to true
+        \Midtrans\Config::$is3ds = true;
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $booking->id,
+                'gross_amount' => $booking->grand_total,
+            ],
+            'customer_details' => [
+                'first_name' => auth()->user()->name,
+                'last_name' => '',
+                'email' => auth()->user()->email,
+                'phone' => auth()->user()->phone_number,
+            ],
+        ];
+        
+        return \Midtrans\Snap::getSnapToken($params);
     }
 
     public function success($username, Request $request) {
