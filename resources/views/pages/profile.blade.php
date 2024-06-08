@@ -81,6 +81,11 @@
                             type="number" 
                             name="hours" 
                             id="hours" 
+                            min=1
+                            max=1000
+                            value="{{ old('hours', 1) }}"
+                            required
+                            autofocus
                             class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('hours') border border-red-500 @enderror"
                         >
                         @error('hours')
@@ -97,6 +102,8 @@
                             type="date" 
                             name="date" 
                             id="date" 
+                            value="{{ old('date', date('Y-m-d')) }}"
+                            min="{{ date('Y-m-d') }}"
                             class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('date') border border-red-500 @enderror"
                         >
                         @error('date')
@@ -114,6 +121,7 @@
                             id="time" 
                             class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('time') border border-red-500 @enderror"
                         >
+                            <option value="">Choose hours and date first...</option>
                         </select>
                         @error('time')
                             <div class="text-red-500">
@@ -138,31 +146,43 @@
 @section('after-scripts')
 <script>
     // Set minimum date for #date element
-    var today = new Date();
-    var formattedDate = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
-    $("#date").attr("min", formattedDate);
+    // var today = new Date();
+    // var formattedDate = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
+    // $("#date").attr("min", formattedDate);
 
     // Get mentor username from data attribute
     var mentorUsername = "{{ $mentor->user->username }}";
 
-    // Change event handler for #date element
-    $("#date, #hours").on("change", async function() {
+    async function getAvailableTime() {
         var hours = $("#hours").val();
         var date = $("#date").val();
+
         try {
             const response = await fetch(`/${mentorUsername}/available-time/${date}/${hours}`);
             const json = await response.json();
 
             if (json.success) {
-                let html = "";
+                var html = "";
+                var defaultHour = "9";
+
                 for (const [key, value] of Object.entries(json.data.times)) {
-                html += `<option value="${key}">${value}</option>`;
+                    var isSelected = "";
+                    if (key === defaultHour) isSelected = "selected";
+                    html += `<option value="${key}" ${isSelected}>${value}</option>`;
                 }
+
                 $("#time").html(html);
             }
         } catch (error) {
             console.error(error);
         }
+    }
+
+    // Change event handler for #date and #hours elements
+    $("#date, #hours").on("change", getAvailableTime());
+
+    $(document).ready(function () {
+        getAvailableTime();
     });
 </script>
 @endsection

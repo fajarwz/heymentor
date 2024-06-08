@@ -23,7 +23,7 @@ class CheckoutRequest extends FormRequest
     {
         return [
             'hours' => 'required|integer|min:1|max:1000',
-            'date' => 'required|string|min:today',
+            'date' => 'required|string|after_or_equal:today',
             'time' => 'required|integer|min:0|max:23',
         ];
     }
