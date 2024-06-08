@@ -3,6 +3,7 @@
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\ListBookings;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,3 +42,7 @@ Route::middleware(['auth'])->group(function() {
     // Route::get('{username}/checkout/{bookingId}/success', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 });
+
+// Route::prefix('admin')->middleware(['auth', "role:{User::ROLE_ADMIN}"])->group(function () {
+//     Route::resource('bookings', ListBookings::class);
+// });

@@ -42,7 +42,11 @@ class Booking extends Model
         'end_date_time' => 'datetime',
     ];
 
-    public function user() {
-        return $this->belongsTo(User::class);
+    public function member() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function mentor() {
+        return $this->belongsTo(User::class, 'mentor_user_id');
     }
 }
