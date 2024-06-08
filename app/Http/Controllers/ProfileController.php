@@ -21,6 +21,13 @@ class ProfileController extends Controller
     }
 
     public function getAvailableTime($username, $date, $hours) {
+        if (!$date || $hours === '') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid request.',
+            ]);
+        }
+
         $startHour = 0;
         $endHour = 23;
 

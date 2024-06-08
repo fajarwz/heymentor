@@ -75,29 +75,58 @@
                     @csrf
                     <div class="mb-4">
                         <p class="text-sm text-indigo-950">
-                            how many hour?
+                            How many hours?
                         </p>
-                        <input type="number" name="hours" id="hours" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                        <input 
+                            type="number" 
+                            name="hours" 
+                            id="hours" 
+                            class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('hours') border border-red-500 @enderror"
+                        >
+                        @error('hours')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     <div class="mb-4">
                         <p class="text-sm text-indigo-950">
-                            choose date
+                            Choose date
                         </p>
-                        <input type="date" name="date" id="date" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                        <input 
+                            type="date" 
+                            name="date" 
+                            id="date" 
+                            class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('date') border border-red-500 @enderror"
+                        >
+                        @error('date')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     <div class="mb-4">
                         <p class="text-sm text-indigo-950">
-                            choose time
+                            Choose time
                         </p>
-                        <select name="time" id="time" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                        <select 
+                            name="time" 
+                            id="time" 
+                            class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('time') border border-red-500 @enderror"
+                        >
                         </select>
+                        @error('time')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     @auth
                         <button type="submit" class="w-full bg-slate-300 px-8 py-4 text-base font-semibold">
                             Proceed to Checkout
                         </button>
                     @else
-                        <a href="{{ route('sign-in') }}" class="block text-center w-full bg-slate-300 px-8 py-4 text-base font-semibold">
+                        <a href="{{ redirect()->guest(route('login')) }}" class="block text-center w-full bg-slate-300 px-8 py-4 text-base font-semibold">
                             Sign In to Checkout
                         </a>
                     @endauth
@@ -112,17 +141,18 @@
 <script>
     // Set minimum date for #date element
     var today = new Date();
-    var formattedDate = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + today.getDate();
+    var formattedDate = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
     $("#date").attr("min", formattedDate);
 
     // Get mentor username from data attribute
     var mentorUsername = "{{ $mentor->user->username }}";
 
     // Change event handler for #date element
-    $("#date").on("change", async function() {
+    $("#date, #hours").on("change", async function() {
         var hours = $("#hours").val();
+        var date = $("#date").val();
         try {
-            const response = await fetch(`/${mentorUsername}/available-time/${this.value}/${hours}`);
+            const response = await fetch(`/${mentorUsername}/available-time/${date}/${hours}`);
             const json = await response.json();
 
             if (json.success) {

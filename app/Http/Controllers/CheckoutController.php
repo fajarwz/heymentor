@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckoutRequest;
 use App\Models\Booking;
 use App\Models\Mentor;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Http;
 
 class CheckoutController extends Controller
 {
-    public function checkout($username, Request $request) {
+    public function checkout($username, CheckoutRequest $request) {
         $mentor = Mentor::whereHas('user', function ($query) use ($username) {
             $query->where('username', $username);
         })->first();
