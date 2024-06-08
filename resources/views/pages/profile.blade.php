@@ -121,15 +121,13 @@
                             </div>
                         @enderror
                     </div>
-                    @auth
-                        <button type="submit" class="w-full bg-slate-300 px-8 py-4 text-base font-semibold">
-                            Proceed to Checkout
-                        </button>
-                    @else
-                        <a href="{{ redirect()->guest(route('login')) }}" class="block text-center w-full bg-slate-300 px-8 py-4 text-base font-semibold">
-                            Sign In to Checkout
-                        </a>
-                    @endauth
+                    <button type="submit" class="w-full bg-slate-300 px-8 py-4 text-base font-semibold">
+                        @auth 
+                            Proceed to Checkout 
+                        @else 
+                            Sign In to Checkout 
+                        @endauth
+                    </button>
                 </form>
             </div>
         </div>

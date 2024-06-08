@@ -15,15 +15,14 @@
                 <p class="text-sm text-indigo-950">
                     Email Address
                 </p>
-                <input type="text" name="email" id="email" value="{{ old('email') }}" autofocus class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="text" name="email" id="email" value="{{ old('email') }}" autofocus class="@error('email') border border-red-500 @enderror w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
                     Password
                 </p>
-                <input type="password" name="password" id="password"
-                    class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="password" name="password" id="password" class="@error('password') border border-red-500 @enderror w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 <a href="#" class="text-blue-400">Forgot Password</a>
             </div>

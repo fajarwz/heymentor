@@ -15,37 +15,35 @@
                 <p class="text-sm text-indigo-950">
                     Complete Name
                 </p>
-                <input type="text" name="name" id="" value="{{ old('name') }}" autofocus class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="text" name="name" id="" value="{{ old('name') }}" autofocus class="@error('name') border border-red-500 @enderror w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
                     Phone Number
                 </p>
-                <input type="text" name="phone_number" id="" value="{{ old('phone_number') }}" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="text" name="phone_number" id="" value="{{ old('phone_number') }}" class="@error('phone_number') border border-red-500 @enderror w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                 <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
                     Email Address
                 </p>
-                <input type="text" name="email" id="" value="{{ old('email') }}" class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="text" name="email" id="" value="{{ old('email') }}" class="@error('email') border border-red-500 @enderror w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
                     Password
                 </p>
-                <input type="password" name="password" id="" 
-                    class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="password" name="password" id="" class="@error('password') border border-red-500 @enderror w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <p class="text-sm text-indigo-950">
                     Confirm Password
                 </p>
-                <input type="password" name="password_confirmation" id="" 
-                    class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
+                <input type="password" name="password_confirmation" id="" class="@error('password_confirmation') border border-red-500 @enderror w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base">
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
             <button type="submit" class="w-full bg-slate-950 text-white px-8 py-4 text-base font-semibold">
