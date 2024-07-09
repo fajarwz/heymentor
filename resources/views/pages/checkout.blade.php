@@ -73,7 +73,7 @@
 @section('after-scripts')
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
     <script type="text/javascript">
-    document.getElementById('pay-button').onclick = function(){
+    $('#pay-button').on('click', function(){
         // SnapToken acquired from previous step
         snap.pay('{{ $snapToken }}', {
         // Optional
@@ -89,6 +89,6 @@
             /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
         }
         });
-    };
+    });
     </script>
 @endsection

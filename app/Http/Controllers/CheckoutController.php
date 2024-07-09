@@ -6,6 +6,7 @@ use App\Http\Requests\CheckoutRequest;
 use App\Models\Booking;
 use App\Models\Mentor;
 use App\Models\Setting;
+use App\Notifications\InvoicePending;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 // use Illuminate\Support\Facades\Http;
@@ -39,7 +40,11 @@ class CheckoutController extends Controller
             'status' => Booking::STATUS_PENDING,
         ]);
 
-        return redirect()->route('checkout.show', [$username, $booking->id]);
+        $paymentRoute = route('checkout.show', [$username, $booking->id]);
+
+        auth()->user()->notify(new InvoicePending($paymentRoute));
+
+        return redirect()->to($paymentRoute);
     }
 
     public function show($username, $bookingId, Request $request) {

@@ -86,7 +86,7 @@
                             value="{{ old('hours', 1) }}"
                             required
                             autofocus
-                            class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('hours') border border-red-500 @enderror"
+                            class="border-0 w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('hours') border border-red-500 @enderror"
                         >
                         @error('hours')
                             <div class="text-red-500">
@@ -104,7 +104,7 @@
                             id="date" 
                             value="{{ old('date', date('Y-m-d')) }}"
                             min="{{ date('Y-m-d') }}"
-                            class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('date') border border-red-500 @enderror"
+                            class="border-0 w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('date') border border-red-500 @enderror"
                         >
                         @error('date')
                             <div class="text-red-500">
@@ -119,7 +119,7 @@
                         <select 
                             name="time" 
                             id="time" 
-                            class="w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('time') border border-red-500 @enderror"
+                            class="border-0 w-full px-4 py-3 bg-slate-100 text-indigo-950 text-base @error('time') border border-red-500 @enderror"
                         >
                             <option value="">Choose hours and date first...</option>
                         </select>
