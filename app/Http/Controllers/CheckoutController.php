@@ -93,13 +93,14 @@ class CheckoutController extends Controller
         return \Midtrans\Snap::getSnapToken($params);
     }
 
-    public function success($username, Request $request) {
-        $mentor = Mentor::whereHas('user', function ($query) use ($username) {
-            $query->where('username', $username);
-        })->first();
+    public function success(Request $request) {
+        $booking = auth()->user()->bookings()->where('id', $request->order_id)->firstOrFail();
+        if ($request->transaction_status === 'settlement') {
+            $booking->update(['status' => Booking::STATUS_APPROVED]);
+        }
 
         return view('pages.checkout-success', [
-            'mentor' => $mentor,
+            'mentorUser' => $booking->mentorUser,
         ]);
     }
 }
