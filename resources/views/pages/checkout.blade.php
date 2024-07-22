@@ -78,7 +78,10 @@
         snap.pay('{{ $snapToken }}', {
         // Optional
         onSuccess: function(result){
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            /* You may add your own js here, this is just example */ 
+            if (result.status_code === '200') {
+                window.location.replace(`{{ route('checkout.success') }}?order_id=${result.order_id}&transaction_status=${result.transaction_status}`);
+            }
         },
         // Optional
         onPending: function(result){

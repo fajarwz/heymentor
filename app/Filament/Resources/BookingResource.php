@@ -33,12 +33,11 @@ class BookingResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('member.name'),
-                TextColumn::make('mentor.name'),
+                TextColumn::make('memberUser.name')->label('Member'),
+                TextColumn::make('mentorUser.name')->label('Mentor'),
                 TextColumn::make('start_date_time'),
                 TextColumn::make('end_date_time'),
-                TextColumn::make('status')
-                    ->badge(),
+                TextColumn::make('status')->badge(),
             ])
             ->filters([
                 //

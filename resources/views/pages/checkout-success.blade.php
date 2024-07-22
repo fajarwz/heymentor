@@ -3,25 +3,25 @@
 @section('content')
 <section class=" max-w-6xl mx-auto py-10 flex flex-col gap-y-10">
     <div class="p-8 border items-center flex flex-row gap-x-4">
-        <a href="{{ route('profile', $mentor->user->username) }}">
-            <img src="{{ $mentor->user->image }}"
+        <a href="{{ route('profile', $mentorUser->username) }}">
+            <img src="{{ $mentorUser->image }}"
                 alt="" class="object-cover w-[100px] h-[100px] bg-red-100 rounded-full">
         </a>
         <div class="flex flex-col gap-y-2 items-left">
-            <a href="{{ route('profile', $mentor->user->username) }}">
+            <a href="{{ route('profile', $mentorUser->username) }}">
                 <h3 class="text-xl text-indigo-950 font-bold">
-                    {{ $mentor->user->name }}
+                    {{ $mentorUser->name }}
                 </h3>
             </a>
             <div class="flex flex-row gap-x-4">
                 <p class="text-sm text-indigo-950">
-                    {{ $mentor->title->name }}
+                    {{ $mentorUser->mentor->title->name }}
                 </p>
                 <p class="text-sm text-indigo-950">
-                    {{ (now()->year - $mentor->start_date_experience->year) . '+ years experience' }}
+                    {{ (now()->year - $mentorUser->mentor->start_date_experience->year) . '+ years experience' }}
                 </p>
                 <p class="text-sm text-indigo-950">
-                    {{ $mentor->total_sessions . ' sessions' }}
+                    {{ $mentorUser->mentor->total_sessions . ' sessions' }}
                 </p>
             </div>
         </div>

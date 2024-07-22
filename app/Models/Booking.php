@@ -51,11 +51,11 @@ class Booking extends Model
         ];
     }
 
-    public function member() {
+    public function memberUser() {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function mentor() {
+    public function mentorUser() {
         return $this->belongsTo(User::class, 'mentor_user_id');
     }
 }
