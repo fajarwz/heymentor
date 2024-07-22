@@ -7,6 +7,7 @@ use App\Filament\Resources\BookingResource\RelationManagers;
 use App\Models\Booking;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -36,12 +37,25 @@ class BookingResource extends Resource
                 TextColumn::make('mentor.name'),
                 TextColumn::make('start_date_time'),
                 TextColumn::make('end_date_time'),
+                TextColumn::make('status')
+                    ->badge(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('approve')
+                    ->action(fn (Booking $record) => $record->update(['status' => Booking::STATUS_APPROVED]))
+                    ->requiresConfirmation()
+                    ->icon('heroicon-o-check')
+                    ->color('success'),
+                    // ->hidden(fn (Booking $record) => $record->status === Booking::STATUS_APPROVED),
+                Tables\Actions\Action::make('reject')
+                    ->action(fn ($record) => $record->update(['status' => Booking::STATUS_REJECTED]))
+                    ->requiresConfirmation()
+                    ->icon('heroicon-o-x-mark')
+                    ->color('danger')
+                    // ->visible($this->record->status !== Booking::STATUS_REJECTED),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->text('image');
             $table->tinyInteger('role')->comment('1 = ADMIN, 2 = MENTOR, 3 = MEMBER');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
