@@ -51,14 +51,14 @@ class BookingResource extends Resource
                 Tables\Actions\Action::make('approve')
                     ->visible(fn (Booking $record) => $record->status !== BookingStatus::STATUS_APPROVED)
                     ->action(fn (Booking $record) => $record->update(['status' => BookingStatus::STATUS_APPROVED]))
-                    ->extraAttributes(['style' => 'margin-right: auto !important'])
+                    ->extraAttributes(['style' => 'margin-right: auto'])
                     ->requiresConfirmation()
                     ->icon('heroicon-o-check')
                     ->color('success'),
                 Tables\Actions\Action::make('reject')
                     ->visible(fn (Booking $record) => $record->status !== BookingStatus::STATUS_REJECTED)
                     ->action(fn (Booking $record) => $record->update(['status' => BookingStatus::STATUS_REJECTED]))
-                    ->extraAttributes(['style' => 'margin-right: auto !important'])
+                    ->extraAttributes(['style' => 'margin-right: auto'])
                     ->requiresConfirmation()
                     ->icon('heroicon-o-x-mark')
                     ->color('danger'),
