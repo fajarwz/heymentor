@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\BookingStatus;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
 use App\Models\Booking;
@@ -9,10 +10,14 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BookingResource extends Resource
@@ -44,22 +49,37 @@ class BookingResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')
-                    ->action(fn (Booking $record) => $record->update(['status' => Booking::STATUS_APPROVED]))
+                    ->visible(fn (Booking $record) => $record->status !== BookingStatus::STATUS_APPROVED)
+                    ->action(fn (Booking $record) => $record->update(['status' => BookingStatus::STATUS_APPROVED]))
+                    ->extraAttributes(['style' => 'margin-right: auto !important'])
                     ->requiresConfirmation()
                     ->icon('heroicon-o-check')
                     ->color('success'),
-                    // ->hidden(fn (Booking $record) => $record->status === Booking::STATUS_APPROVED),
                 Tables\Actions\Action::make('reject')
-                    ->action(fn ($record) => $record->update(['status' => Booking::STATUS_REJECTED]))
+                    ->visible(fn (Booking $record) => $record->status !== BookingStatus::STATUS_REJECTED)
+                    ->action(fn (Booking $record) => $record->update(['status' => BookingStatus::STATUS_REJECTED]))
+                    ->extraAttributes(['style' => 'margin-right: auto !important'])
+                    ->requiresConfirmation()
+                    ->icon('heroicon-o-x-mark')
+                    ->color('danger'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkAction::make('approve-selected')
+                    ->action(fn (Collection $records) => $records->each->update(['status' => BookingStatus::STATUS_APPROVED]))
+                    ->requiresConfirmation()
+                    ->icon('heroicon-o-check')
+                    ->color('success')
+                    ->size(ActionSize::Small)
+                    ->outlined()
+                    ->deselectRecordsAfterCompletion(),
+                Tables\Actions\BulkAction::make('reject-selected')
+                    ->action(fn (Collection $records) => $records->each->update(['status' => BookingStatus::STATUS_REJECTED]))
                     ->requiresConfirmation()
                     ->icon('heroicon-o-x-mark')
                     ->color('danger')
-                    // ->visible($this->record->status !== Booking::STATUS_REJECTED),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    ->size(ActionSize::Small)
+                    ->outlined()
+                    ->deselectRecordsAfterCompletion(),
             ]);
     }
 
@@ -74,7 +94,6 @@ class BookingResource extends Resource
     {
         return [
             'index' => Pages\ListBookings::route('/'),
-            'edit' => Pages\EditBooking::route('/{record}/edit'),
         ];
     }
 }
