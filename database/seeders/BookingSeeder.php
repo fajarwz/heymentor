@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\BookingStatus;
+use App\Enums\UserRole;
 use App\Models\Booking;
 use App\Models\Setting;
 use App\Models\User;
@@ -15,8 +17,8 @@ class BookingSeeder extends Seeder
      */
     public function run(): void
     {
-        $member = User::where('role', User::ROLE_MEMBER)->first();
-        $mentor = User::where('role', User::ROLE_MENTOR)->first();
+        $member = User::where('role', UserRole::ROLE_MEMBER)->first();
+        $mentor = User::where('role', UserRole::ROLE_MENTOR)->first();
         $setting = Setting::first();
 
         $data = [
@@ -30,7 +32,7 @@ class BookingSeeder extends Seeder
                 'career_insurance_cost' => $careerInsuranceCost = $setting->career_insurance_cost,
                 'add_on_tools_cost' => $addOnToolsCost = $setting->add_on_tools_cost,
                 'grand_total' => $priceAfterHours + $taxCost + $careerInsuranceCost + $addOnToolsCost,
-                'status' => Booking::STATUS_APPROVED,
+                'status' => BookingStatus::STATUS_APPROVED,
             ],
             [
                 'user_id' => $member->id,
@@ -42,7 +44,7 @@ class BookingSeeder extends Seeder
                 'career_insurance_cost' => $careerInsuranceCost = $setting->career_insurance_cost,
                 'add_on_tools_cost' => $addOnToolsCost = $setting->add_on_tools_cost,
                 'grand_total' => $priceAfterHours + $taxCost + $careerInsuranceCost + $addOnToolsCost,
-                'status' => Booking::STATUS_APPROVED,
+                'status' => BookingStatus::STATUS_APPROVED,
             ],
         ];
 

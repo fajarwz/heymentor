@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\Mentor;
 use App\Models\Title;
 use App\Models\User;
@@ -55,7 +56,7 @@ class MentorSeeder extends Seeder
                 'email' => $data['email'],
                 'password' => 'password',
                 'image' => $data['image'],
-                'role' => User::ROLE_MENTOR, 
+                'role' => UserRole::ROLE_MENTOR, 
             ]);
     
             Mentor::insert([

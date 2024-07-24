@@ -3,7 +3,6 @@
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use App\Livewire\ListBookings;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +42,6 @@ Route::middleware(['auth'])->group(function() {
 Route::get('{username}/available-time/{date}/{hours}', [ProfileController::class, 'getAvailableTime'])->name('profile.get-available-time');
 Route::get('{username}', [ProfileController::class, 'show'])->name('profile');
 
-// Route::prefix('admin')->middleware(['auth', "role:{User::ROLE_ADMIN}"])->group(function () {
+// Route::prefix('admin')->middleware(['auth', "role:{UserRole::ROLE_ADMIN}"])->group(function () {
 //     Route::resource('bookings', ListBookings::class);
 // });

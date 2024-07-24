@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -43,7 +44,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'image' => env('AVATAR_URL').$request->name,
-            'role' => User::ROLE_MEMBER, 
+            'role' => UserRole::ROLE_MEMBER, 
         ]);
 
         event(new Registered($user));

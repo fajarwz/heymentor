@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Mentor;
-use App\Models\Title;
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -41,7 +40,7 @@ class MemberSeeder extends Seeder
                 'email' => $data['email'],
                 'password' => 'password',
                 'image' => env('AVATAR_URL').$data['name'],
-                'role' => User::ROLE_MEMBER, 
+                'role' => UserRole::ROLE_MEMBER, 
             ]);
         }
     }

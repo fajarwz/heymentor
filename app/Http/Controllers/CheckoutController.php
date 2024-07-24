@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
 use App\Http\Requests\CheckoutRequest;
-use App\Models\Booking;
 use App\Models\Mentor;
 use App\Models\Setting;
 use App\Notifications\InvoicePending;
@@ -37,7 +37,7 @@ class CheckoutController extends Controller
             'career_insurance_cost' => $careerInsuranceCost,
             'add_on_tools_cost' => $addOnToolsCost,
             'grand_total' => $grandTotal,
-            'status' => Booking::STATUS_PENDING,
+            'status' => BookingStatus::STATUS_PENDING,
         ]);
 
         $paymentRoute = route('checkout.show', [$username, $booking->id]);
@@ -96,7 +96,7 @@ class CheckoutController extends Controller
     public function success(Request $request) {
         $booking = auth()->user()->bookings()->where('id', $request->order_id)->firstOrFail();
         if ($request->transaction_status === 'settlement') {
-            $booking->update(['status' => Booking::STATUS_APPROVED]);
+            $booking->update(['status' => BookingStatus::STATUS_APPROVED]);
         }
 
         return view('pages.checkout-success', [

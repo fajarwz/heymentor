@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -27,7 +28,7 @@ class AdminSeeder extends Seeder
                 'email' => $data['email'],
                 'password' => 'password',
                 'image' => env('AVATAR_URL').$data['name'],
-                'role' => User::ROLE_ADMIN, 
+                'role' => UserRole::ROLE_ADMIN, 
             ]);
         }
     }

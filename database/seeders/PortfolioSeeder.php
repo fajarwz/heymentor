@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use App\Models\Portfolio;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -14,7 +15,7 @@ class PortfolioSeeder extends Seeder
      */
     public function run(): void
     {
-        $mentor = User::where('role', User::ROLE_MENTOR)->first();
+        $mentor = User::where('role', UserRole::ROLE_MENTOR)->first();
 
         Portfolio::insert([
             [
