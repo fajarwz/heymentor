@@ -179,7 +179,9 @@
     }
 
     // Change event handler for #date and #hours elements
-    $("#date, #hours").on("change", getAvailableTime());
+    $("#date, #hours").on("change", function() {
+        getAvailableTime();
+    });
 
     $(document).ready(function () {
         getAvailableTime();

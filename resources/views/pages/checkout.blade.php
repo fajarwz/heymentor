@@ -80,7 +80,7 @@
         onSuccess: function(result){
             /* You may add your own js here, this is just example */ 
             if (result.status_code === '200') {
-                window.location.replace(`{{ route('checkout.success') }}?order_id=${result.order_id}&transaction_status=${result.transaction_status}`);
+                window.location.replace(`{{ route('checkout.success') }}?order_id=${result.order_id}`);
             }
         },
         // Optional

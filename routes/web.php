@@ -32,6 +32,8 @@ Route::get('/sign-up', function () {
 
 require __DIR__.'/auth.php';
 
+Route::post('checkout/notification', [CheckoutController::class, 'notification'])->name('checkout.notification');
+
 Route::middleware(['auth'])->group(function() {
     Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::post('{username}/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
