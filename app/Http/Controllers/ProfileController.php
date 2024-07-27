@@ -38,6 +38,17 @@ class ProfileController extends Controller
 
         for ($hour = $startHour; $hour <= $endHour; $hour++) {
             $startTime = $date->clone()->setHour($hour)->startOfHour();
+            // if the time is less than or equal now, do not display
+            $isDateLessThanOrEqualToday = $date->lte(today());
+            if ($isDateLessThanOrEqualToday) {
+                $startTime = now()->setHour($hour)->startOfHour();
+
+                $isStartTimeLessThanOrEqualNow = $startTime->lte(now());
+                if ($isStartTimeLessThanOrEqualNow) {
+                    continue;
+                }
+            }
+
             $endTime = $date->clone()->setHour($hour + ($hours - 1))->endOfHour();
 
             // Check if any booking conflicts with this time slot

@@ -8,6 +8,9 @@ use App\Models\Booking;
 use App\Models\Mentor;
 use App\Models\Setting;
 use App\Notifications\InvoicePending;
+use App\Services\Midtrans\NotificationService as MidtransNotificationService;
+use App\Services\Midtrans\Midtrans;
+use App\Services\Midtrans\SnapTokenService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -20,7 +23,7 @@ class CheckoutController extends Controller
 
         $isBookingConflict = $this->isBookingConflict($mentor, $request);
         if ($isBookingConflict) {
-            return abort(403, 'Booking time is not available');
+            abort(403, 'Booking time is not available');
         }
 
         $setting = Setting::first();
@@ -78,40 +81,22 @@ class CheckoutController extends Controller
 
         $setting = Setting::first();
 
-        $snapToken = $this->getMidtransSnapToken($booking);
+        $snapTokenService = new SnapTokenService($booking, auth()->user());
+        $snapToken = $snapTokenService->getSnapToken();
 
         return view('pages.checkout', [
             'mentor' => $mentor,
             'booking' => $booking,
             'setting' => $setting,
             'snapToken' => $snapToken,
-            'clientKey' => env('MIDTRANS_CLIENT_KEY'),
+            'clientKey' => config('midtrans.client_key'),
         ]);
-    }
-
-    private function getMidtransSnapToken($booking) {
-        $this->setUpMidtransConfig();
-
-        $params = [
-            'transaction_details' => [
-                'order_id' => $booking->id,
-                'gross_amount' => $booking->grand_total,
-            ],
-            'customer_details' => [
-                'first_name' => auth()->user()->name,
-                'last_name' => '',
-                'email' => auth()->user()->email,
-                'phone' => auth()->user()->phone_number,
-            ],
-        ];
-        
-        return \Midtrans\Snap::getSnapToken($params);
     }
 
     public function success(Request $request) {
         $booking = auth()->user()->bookings()->where('id', $request->order_id)->firstOrFail();
         if ($booking->status !== BookingStatus::STATUS_APPROVED) {
-            return abort(404);
+            abort(404);
         }
 
         return view('pages.checkout-success', [
@@ -120,77 +105,30 @@ class CheckoutController extends Controller
     }
 
     public function notification() {        
-        $this->setUpMidtransConfig();
+        $midtransNotificationService = new MidtransNotificationService(new Booking);
 
-        try {
-            $notif = new \Midtrans\Notification();
-        }
-        catch (\Exception $e) {
-            exit($e->getMessage());
-        }
+        $notification = $midtransNotificationService->getNotification();
+        $booking = $midtransNotificationService->getOrder();
 
-        $notif = $notif->getResponse();
-
-        // info(json_encode($notif));
-
-        $order = Booking::findOrFail($notif->order_id);
-
-        if (!$this->isSignatureKeyVerified($notif, $order)) {
-            return abort(403, 'Invalid signature');
-        }
-
-        $this->updateTransactionStatus($notif, $order);
+        $this->updateTransactionStatus($notification, $booking);
 
         return response()->json([
             'status' => 'success',
         ]);
     }
 
-    private function isSignatureKeyVerified($notif, $order) {
-        return $this->createSignatureKey($notif, $order) === $notif->signature_key;
-    }
-
-    private function createSignatureKey($notif, $order) {
-        $orderId = $order->id;
-        $statusCode = $notif->status_code;
-        $grossAmount = number_format($order->grand_total, 2, '.', '');
-
-        $serverKey = env('MIDTRANS_SERVER_KEY');
-
-        $signatureBuilder = $orderId . $statusCode . $grossAmount . $serverKey;
-        // info($signatureBuilder);
-        $signature = openssl_digest($signatureBuilder, 'sha512');
-
-        return $signature;
-    }
-
-    private function updateTransactionStatus($notif, $order) {
-        if ($notif->transaction_status == 'capture') {
-            // For credit card transaction, we need to check whether transaction is challenge by FDS or not
-            if ($notif->payment_type == 'credit_card') {
-                if ($notif->fraud_status == 'challenge') {
-                    $order->update(['status' => BookingStatus::STATUS_CHALLENGE]);
-                } else {
-                    $order->update(['status' => BookingStatus::STATUS_APPROVED]);
-                }
-            }
-        } else if ($notif->transaction_status == 'settlement') {
-            $order->update(['status' => BookingStatus::STATUS_APPROVED]);
-        } else if ($notif->transaction_status == 'pending') {
-            $order->update(['status' => BookingStatus::STATUS_PENDING]);
-        } else {
-            $order->update(['status' => BookingStatus::STATUS_REJECTED]);
+    private function updateTransactionStatus($notification, $booking) {
+        if ($notification->isSuccess()) {
+            $booking->update(['status' => BookingStatus::STATUS_APPROVED]);
+        } 
+        else if ($notification->isChallenge()) {
+            $booking->update(['status' => BookingStatus::STATUS_CHALLENGE]);
+        } 
+        else if ($notification->isPending()) {
+            $booking->update(['status' => BookingStatus::STATUS_PENDING]);
+        } 
+        else {
+            $booking->update(['status' => BookingStatus::STATUS_REJECTED]);
         }
-    }
-
-    private function setUpMidtransConfig() {
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = env('MIDTRANS_IS_SANITIZED');
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = env('MIDTRANS_IS_3DS');
     }
 }
